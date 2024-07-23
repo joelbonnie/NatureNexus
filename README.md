@@ -1,12 +1,14 @@
 
 # Wild
-#### Group 19 
 
 ## Project Description:
 
 
 ### Summary:
 
-### Timeline:
+### Task Breakdown
 
-### Things to Do:
+### Task Assignment
+
+### Task Timeline:
+
