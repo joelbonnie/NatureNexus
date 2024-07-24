@@ -1,5 +1,5 @@
 
-# Wild
+# NatureNexus
 
 ## Project Description:
 
