@@ -5,8 +5,11 @@ export function Entities({ mockEntities }) {
     const { entity } = useParams();
 
     const [currentEntites, setCurrentEntities] = useState(mockEntities);
+    const [searchInput, setSearchInput] = useState('');
 
-    // const { entities } = useParams();
+    const handleChange = (e) => {
+        setSearchInput(e.target.value);
+    };
 
     useEffect(() => {
         // TODO: fetch all of the current entity data from the specified entity table, `entity`.
@@ -14,12 +17,34 @@ export function Entities({ mockEntities }) {
         // for now, mock data is passed in and used.
     }, []);
 
+    const searchedEntities = (searchInput) => {
+        return (
+            currentEntites
+                // the first filter is required for now because mock data contains different types of entities together
+                .filter((e) => e.entity.includes(entity))
+                .filter((e) =>
+                    Object.entries(e).reduce(
+                        (acc, curr) =>
+                            String(curr[1]).includes(searchInput) || acc,
+                        false
+                    )
+                )
+        );
+    };
+
     return (
         <div>
-            {currentEntites
-                // filtering is required for now because mock data contains different types of entities together
-                .filter((e) => e.entity.includes(entity))
-                .map((e) => (
+            <div>
+                <input
+                    type='text'
+                    placeholder='Search'
+                    onChange={handleChange}
+                    value={searchInput}
+                ></input>
+            </div>
+
+            <div>
+                {searchedEntities(searchInput).map((e) => (
                     <Link
                         to={`../${e.entity}/${e.id}`}
                         relative='path'
@@ -28,6 +53,7 @@ export function Entities({ mockEntities }) {
                         <Entity entity={e} />
                     </Link>
                 ))}
+            </div>
         </div>
     );
 }
