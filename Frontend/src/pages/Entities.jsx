@@ -9,7 +9,7 @@ export function Entities({ mockEntities }) {
     // const { entities } = useParams();
 
     useEffect(() => {
-        // fetch all of the current entity data from the specified entity table, `entity`.
+        // TODO: fetch all of the current entity data from the specified entity table, `entity`.
         // and use setCurrentEntities() and the returned data to set state.
         // for now, mock data is passed in and used.
     }, []);

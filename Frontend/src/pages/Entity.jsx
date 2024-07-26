@@ -7,7 +7,7 @@ export function Entity({ mockEntities }) {
     // const [currentEntity, setCurrentEntity] = useState({});
 
     useEffect(() => {
-        // fetch data based on `id` and `entity
+        // TODO: fetch data based on `id` and `entity
         // and use setCurrentEntity() and the returned data to set state.
         // for now, mock data is passed in and used.
     }, []);
