@@ -25,7 +25,9 @@ export function Entities({ mockEntities }) {
                 .filter((e) =>
                     Object.entries(e).reduce(
                         (acc, curr) =>
-                            String(curr[1]).includes(searchInput) || acc,
+                            String(curr[1])
+                                .toLowerCase()
+                                .includes(searchInput.toLowerCase()) || acc,
                         false
                     )
                 )
@@ -48,7 +50,7 @@ export function Entities({ mockEntities }) {
                     <Link
                         to={`../${e.entity}/${e.id}`}
                         relative='path'
-                        key={e.entity + '_' + e.id}
+                        key={e.entity + '_' + String(e.id)}
                     >
                         <Entity entity={e} />
                     </Link>

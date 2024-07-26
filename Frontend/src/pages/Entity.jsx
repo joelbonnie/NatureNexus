@@ -16,7 +16,7 @@ export function Entity({ mockEntities }) {
 
     return (
         Object.entries(entityInfo).map((e) => (
-            <div>{e[0]}: {e[1]}</div>
+            <div key={e[0] + '_' + String(e[1])}>{e[0]}: {e[1]}</div>
         ))
     );
 }
