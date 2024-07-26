@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 export function Entities({ mockEntities }) {
     const { entity } = useParams();
 
-    const [currentEntites, setCurrentEntities] = useState({});
+    const [currentEntites, setCurrentEntities] = useState(mockEntities);
 
     // const { entities } = useParams();
 
@@ -16,11 +16,15 @@ export function Entities({ mockEntities }) {
 
     return (
         <div>
-            {mockEntities
+            {currentEntites
                 // filtering is required for now because mock data contains different types of entities together
                 .filter((e) => e.entity.includes(entity))
                 .map((e) => (
-                    <Link to={`../${e.entity}/${e.id}`} relative='path'>
+                    <Link
+                        to={`../${e.entity}/${e.id}`}
+                        relative='path'
+                        key={e.entity + '_' + e.id}
+                    >
                         <Entity entity={e} />
                     </Link>
                 ))}
