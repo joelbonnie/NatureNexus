@@ -4,7 +4,6 @@ let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 
 let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
 let animalsRouter = require('./routes/animals');
 let equipmentRouter = require('./routes/equipment');
 let facilitiesRouter = require('./routes/facilities');
@@ -21,7 +20,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/animals', animalsRouter);
 
 app.use('/equipment', equipmentRouter);
