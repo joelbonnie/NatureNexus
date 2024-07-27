@@ -3,13 +3,17 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Users } from './pages/Users.jsx';
-import { User } from './pages/User.jsx';
+import { Entity } from './pages/Entity.jsx';
+import { Entities } from './pages/Entities.jsx';
 
-const list = [
-    { name: 'Cindy', id: 0 },
-    { name: 'Joel', id: 1 },
-    { name: 'Aiden', id: 2 },
+const mockData = [
+    { entity: 'animal', id: 0, species: 'cottontail rabbit', health: 'poor' },
+    { entity: 'animal', id: 1, species: 'british columbia wolf', health: 'excellent'},
+    { entity: 'plant', id: 0, health: 'good' },
+    { entity: 'plant', id: 1, health: 'mid' },
+    { entity: 'habitat', id: 0, name: 'Becker Forest' },
+    { entity: 'habitat', id: 1, name: 'Peddlehead Lake' },
+    { entity: 'habitat', id: 2, name: 'Becker Lake' },
 ];
 
 const router = createBrowserRouter([
@@ -18,20 +22,12 @@ const router = createBrowserRouter([
         element: <App />,
     },
     {
-        path: '/users',
-        element: <Users users={list} />,
-    },
-    {
-        path: '/users/:id',
-        element: <User users={list} />,
-    },
-    {
         path: '/:entity/',
-        element: <Users users={list} />, // Entity page (list)
+        element: <Entities mockEntities={mockData} />, // Entity page (list of a specific entity)
     },
     {
         path: '/:entity/:id',
-        element: <User users={list} />, // specific instance page
+        element: <Entity mockEntities={mockData} />, // specific entity instance page
     },
 ]);
 
