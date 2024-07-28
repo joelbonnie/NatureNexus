@@ -8,25 +8,25 @@ function App() {
             <h1>NatureNexus</h1>
 
             <div>
-                <Link to={'/animal'} relative='path'>
+                <Link to={'/animals'} relative='path'>
                     Animals
                 </Link>
             </div>
 
             <div>
-                <Link to={'/plant'} relative='path'>
+                <Link to={'/plants'} relative='path'>
                     Plants
                 </Link>
             </div>
 
             <div>
-                <Link to={'/habitat'} relative='path'>
+                <Link to={'/habitats'} relative='path'>
                     Habitats
                 </Link>
             </div>
 
             <div>
-                <Link to={'/ranger'} relative='path'>
+                <Link to={'/rangers'} relative='path'>
                     Rangers
                 </Link>
             </div>
@@ -38,13 +38,13 @@ function App() {
             </div>
 
             <div>
-                <Link to={'/facility'} relative='path'>
+                <Link to={'/facilities'} relative='path'>
                     Facilities
                 </Link>
             </div>
 
             <div>
-                <Link to={'/visitor'} relative='path'>
+                <Link to={'/visitors'} relative='path'>
                     Visitors
                 </Link>
             </div>

@@ -3,12 +3,12 @@ var router = express.Router();
 
 const mockData = []; // TODO remove and replace with DB query
 
-/* GET equipment listing. */
+/* GET visitor listing. */
 router.get('/', function (req, res, next) {
     res.status(200).send(mockData);
 });
 
-/* GET equipment info by ID */
+/* GET visitor info by ID */
 router.get('/:id', function (req, res, next) {
     const { id } = req.params;
     // TODO implement DB query

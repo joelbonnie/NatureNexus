@@ -6,28 +6,18 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Entity } from './pages/Entity.jsx';
 import { Entities } from './pages/Entities.jsx';
 
-const mockData = [
-    { entity: 'animal', id: 0, species: 'cottontail rabbit', health: 'poor' },
-    { entity: 'animal', id: 1, species: 'british columbia wolf', health: 'excellent'},
-    { entity: 'plant', id: 0, health: 'good' },
-    { entity: 'plant', id: 1, health: 'mid' },
-    { entity: 'habitat', id: 0, name: 'Becker Forest' },
-    { entity: 'habitat', id: 1, name: 'Peddlehead Lake' },
-    { entity: 'habitat', id: 2, name: 'Becker Lake' },
-];
-
 const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
     },
     {
-        path: '/:entity/',
-        element: <Entities mockEntities={mockData} />, // Entity page (list of a specific entity)
+        path: '/:entityName/',
+        element: <Entities />, // Entity page (list of a specific entity)
     },
     {
-        path: '/:entity/:id',
-        element: <Entity mockEntities={mockData} />, // specific entity instance page
+        path: '/:entityName/:id',
+        element: <Entity />, // specific entity instance page
     },
 ]);
 
