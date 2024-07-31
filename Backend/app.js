@@ -4,6 +4,13 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 
+require('dotenv').config();
+
+const db = require('./database/db');
+console.log(process.env.ORACLE_USER);
+db.initializeConnectionPool();
+setTimeout(() => db.fetchAnimalsFromDb().then((r) => console.log(r)), 100);
+
 let indexRouter = require('./routes/index');
 let animalsRouter = require('./routes/animals');
 let equipmentRouter = require('./routes/equipment');
@@ -12,6 +19,7 @@ let habitatsRouter = require('./routes/habitats');
 let plantsRouter = require('./routes/plants');
 let rangersRouter = require('./routes/rangers');
 let visitorsRouter = require('./routes/visitors');
+let entityRouter = require('./routes/entity');
 
 let app = express();
 
@@ -31,5 +39,6 @@ app.use('/habitats', habitatsRouter);
 app.use('/plants', plantsRouter);
 app.use('/rangers', rangersRouter);
 app.use('/visitors', visitorsRouter);
+app.use('/entity', entityRouter);
 
 module.exports = app;

@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+// TODO: creating mapping for all table IDs
+// TODO: OR try to find primary keys from queries
+const id_name = { ANIMAL: 'ANIMALID' };
+
 export function Entities() {
     const { entityName } = useParams();
 
@@ -12,10 +16,13 @@ export function Entities() {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:3000/${entityName}`)
+        fetch(`http://localhost:3001/entity/${entityName}`)
             .then((response) => response.json())
             .then((data) => setCurrentEntities(data));
     }, []);
+
+    const id = id_name[entityName] || 'id';
+    console.log(id);
 
     const searchedEntities = (searchInput) => {
         return (
@@ -47,11 +54,15 @@ export function Entities() {
             <div>
                 {searchedEntities(searchInput).map((e) => (
                     <Link
-                        to={`../${entityName}/${e.id}`}
+                        to={`../${entityName}/${e[id]}`}
                         relative='path'
-                        key={entityName + '_' + String(e.id)}
+                        key={entityName + '_' + String(e[id])}
                     >
-                        <EntityListing entity={e} entityName={entityName} />
+                        <EntityListing
+                            entity={e}
+                            entityName={entityName}
+                            id={id}
+                        />
                     </Link>
                 ))}
             </div>
@@ -59,10 +70,10 @@ export function Entities() {
     );
 }
 
-function EntityListing({ entity, entityName }) {
+function EntityListing({ entity, entityName, id }) {
     return (
         <h3>
-            {entityName} {entity.id}
+            {entityName} {entity[id]}
         </h3>
     );
 }

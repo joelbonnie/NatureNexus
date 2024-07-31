@@ -1,53 +1,28 @@
 import { Link } from 'react-router-dom';
 
 import './App.css';
+import { useEffect, useState } from 'react';
 
 function App() {
+    const [tables, setTables] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:3001/tables')
+            .then((response) => response.json())
+            .then((data) => setTables(data));
+    }, []);
+
     return (
         <div>
             <h1>NatureNexus</h1>
 
-            <div>
-                <Link to={'/animals'} relative='path'>
-                    Animals
-                </Link>
-            </div>
-
-            <div>
-                <Link to={'/plants'} relative='path'>
-                    Plants
-                </Link>
-            </div>
-
-            <div>
-                <Link to={'/habitats'} relative='path'>
-                    Habitats
-                </Link>
-            </div>
-
-            <div>
-                <Link to={'/rangers'} relative='path'>
-                    Rangers
-                </Link>
-            </div>
-
-            <div>
-                <Link to={'/equipment'} relative='path'>
-                    Equipment
-                </Link>
-            </div>
-
-            <div>
-                <Link to={'/facilities'} relative='path'>
-                    Facilities
-                </Link>
-            </div>
-
-            <div>
-                <Link to={'/visitors'} relative='path'>
-                    Visitors
-                </Link>
-            </div>
+            {tables.map((t) => (
+                <div key={t}>
+                    <Link to={`/${t}`} relative='path'>
+                        {t}
+                    </Link>
+                </div>
+            ))}
         </div>
     );
 }
