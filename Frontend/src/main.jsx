@@ -5,11 +5,16 @@ import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Entity } from './pages/Entity.jsx';
 import { Entities } from './pages/Entities.jsx';
+import { NatureForm } from './pages/NatureForm.jsx';
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
+    },
+    {
+        path: '/form',
+        element: <NatureForm />,
     },
     {
         path: '/:entityName/',
