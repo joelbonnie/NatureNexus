@@ -7,7 +7,11 @@ function App() {
     const [tables, setTables] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3001/tables')
+        fetch(`http://localhost:${import.meta.env.VITE_BACKEND_PORT}/tables`)
+            // To use the VITE_BACKEND_PORT env variable, create a .env file under the Frontend directory.
+            // In it, add: VITE_BACKEND_PORT=...
+            // Replace ... with the backend port, which you can find by running your generated local-start.sh file.
+            // You'll see "Server running at ...".
             .then((response) => response.json())
             .then((data) => setTables(data));
     }, []);

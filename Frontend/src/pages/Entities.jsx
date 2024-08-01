@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-// TODO: creating mapping for all table IDs
-// TODO: OR try to find primary keys from queries
-const id_name = { ANIMAL: 'ANIMALID' };
+const UNIQUE_ID_NAMES = {
+    HABITAT: 'HABITATNAME',
+    PARKRANGER: 'RANGERID',
+    FACILITY: 'FACILITYNAME',
+};
 
 export function Entities() {
     const { entityName } = useParams();
@@ -16,18 +18,21 @@ export function Entities() {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:3001/entity/${entityName}`)
+        fetch(
+            `http://localhost:${
+                import.meta.env.VITE_BACKEND_PORT 
+            }/entity/${entityName}`
+        )
             .then((response) => response.json())
             .then((data) => setCurrentEntities(data));
     }, []);
 
-    const id = id_name[entityName] || 'id';
+    const id = (UNIQUE_ID_NAMES[entityName] || `${entityName}id`).toUpperCase();
     console.log(id);
 
     const searchedEntities = (searchInput) => {
         return (
             currentEntites
-                // the first filter is required for now because mock data contains different types of entities together
                 .filter((e) =>
                     Object.entries(e).reduce(
                         (acc, curr) =>

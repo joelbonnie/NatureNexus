@@ -4,7 +4,8 @@
 cd "$(dirname "$0")"
 
 # File path
-ENV_FILE_PATH="../../.env"
+# NOTE: You may need to change this path. -CC
+ENV_FILE_PATH="../../../.env"
 
 # Define a range
 START=50000
@@ -49,4 +50,3 @@ echo "Building SSH tunnel on port $chosen_port to your oracle database..."
 read -p "Enter your CWL name: " cwl_name
 
 exec ssh -L $chosen_port:dbhost.students.cs.ubc.ca:1522 $cwl_name@remote.students.cs.ubc.ca
-

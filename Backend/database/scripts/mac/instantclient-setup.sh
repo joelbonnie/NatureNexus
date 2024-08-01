@@ -17,9 +17,10 @@ echo "# Configure the oracle instant client env variable"
 echo "export DYLD_LIBRARY_PATH=$oraclePath:\$DYLD_LIBRARY_PATH"
 echo
 echo "# Start Node application"
-# NOTE: You may need to change this path. Not too sure exactly why, but I had to fiddle with my path. -CC
-echo "exec node ../bin/www"
-) > ../../local-start.sh
+# NOTE: You may need to change this path. -CC
+echo "exec node ./bin/www"
+# NOTE: You may need to change this path too. -CC
+) > ../../../local-start.sh
 
 # Change the permissions of the script to make it executable
 chmod +x ../../local-start.sh

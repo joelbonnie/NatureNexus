@@ -7,7 +7,11 @@ export function Entity() {
     const [currentEntity, setCurrentEntity] = useState({});
 
     useEffect(() => {
-        fetch(`http://localhost:3001/entity/${entityName}/${id}`)
+        fetch(
+            `http://localhost:${
+                import.meta.env.VITE_BACKEND_PORT
+            }/entity/${entityName}/${id}`
+        )
             .then((response) => response.json())
             .then((data) => setCurrentEntity(data[0]));
     }, []);

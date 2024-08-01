@@ -491,3 +491,5 @@ INSERT INTO Visitor(passId, dateVisited, rangerId)
 VALUES (00005,DATE '2023-11-12', 0003);
 INSERT INTO Visitor(passId, dateVisited, rangerId)
 VALUES (00006,DATE '2024-04-07', 0004);
+
+COMMIT;
