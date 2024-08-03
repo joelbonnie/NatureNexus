@@ -5,22 +5,34 @@ const UNIQUE_ID_NAMES = {
     HABITAT: 'HABITATNAME',
     PARKRANGER: 'RANGERID',
     FACILITY: 'FACILITYNAME',
+    RABBIT: 'ANIMALID',
+    FROG: 'ANIMALID',
+    WOLF: 'ANIMALID',
+    OWL: 'ANIMALID',
+    MOM: 'animalId_Mom',
+    DAD: 'animalId_Dad',
+    FOREST: 'HABITATNAME',
+    POND: 'HABITATNAME',
+    SPECIES: 'SPECIESNAME',
+    FAMILY: 'taxonomicalFamily',
+    // TODO: id names are not correct for:
+    // area, livesin, manages, monitors, plantedby, visitor
 };
 
 export function Entities() {
     const { entityName } = useParams();
 
-    const [currentEntites, setCurrentEntities] = useState([]);
-    const [searchInput, setSearchInput] = useState('');
+    const [currentEntities, setCurrentEntities] = useState([]);
+    const [filterInput, setFilterInput] = useState('');
 
-    const handleChange = (e) => {
-        setSearchInput(e.target.value);
+    const handleFilterInput = (e) => {
+        setFilterInput(e.target.value);
     };
 
     useEffect(() => {
         fetch(
             `http://localhost:${
-                import.meta.env.VITE_BACKEND_PORT 
+                import.meta.env.VITE_BACKEND_PORT
             }/entity/${entityName}`
         )
             .then((response) => response.json())
@@ -30,34 +42,34 @@ export function Entities() {
     const id = (UNIQUE_ID_NAMES[entityName] || `${entityName}id`).toUpperCase();
     console.log(id);
 
-    const searchedEntities = (searchInput) => {
-        return (
-            currentEntites
-                .filter((e) =>
-                    Object.entries(e).reduce(
-                        (acc, curr) =>
-                            String(curr[1])
-                                .toLowerCase()
-                                .includes(searchInput.toLowerCase()) || acc,
-                        false
-                    )
-                )
-        );
-    };
+    function submitFilter(e) {
+        e.preventDefault();
+
+        fetch(
+            `http://localhost:${
+                import.meta.env.VITE_BACKEND_PORT
+            }/entity/${entityName}?filter=${filterInput}`
+        )
+            .then((response) => response.json())
+            .then((data) => setCurrentEntities(data));
+    }
 
     return (
         <div>
             <div>
-                <input
-                    type='text'
-                    placeholder='Search'
-                    onChange={handleChange}
-                    value={searchInput}
-                ></input>
+                <form onSubmit={submitFilter}>
+                    <input
+                        type='text'
+                        placeholder='WHERE clause'
+                        onChange={handleFilterInput}
+                        value={filterInput}
+                    ></input>
+                    <input type='submit' value='Filter'></input>
+                </form>
             </div>
 
             <div>
-                {searchedEntities(searchInput).map((e) => (
+                {currentEntities.map((e) => (
                     <Link
                         to={`../${entityName}/${e[id]}`}
                         relative='path'

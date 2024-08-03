@@ -19,14 +19,12 @@ function printChanges(data) {
 export function NatureForm({
     getData = simulateNetwork,
     submitChanges = printChanges,
+    isCheckbox = false,
 }) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        // TODO get the initial values from the DB here
-        // when this is done we can get rid of temp and replace it with {} for default state
-
-        getData().then((r) => setData(r)); // replace this
+        getData().then((r) => setData(r));
     }, []);
 
     function updateData(field, newValue) {
@@ -38,23 +36,33 @@ export function NatureForm({
 
     function handleSubmit(e) {
         e.preventDefault();
-        // TODO make request to backend here
         submitChanges(data);
-
-        // possibly redirect to another page? we can make this a prop too, if we want to :)
     }
 
-    if (!data) return <div>Loading Form...</div>;
+    if (!data) {
+        console.log('loading');
+        return <div>Loading Form...</div>;
+    }
+
     return (
         <form onSubmit={handleSubmit}>
-            {Object.entries(data).map(([field, value]) => (
-                <NatureInput
-                    key={field}
-                    field={field}
-                    initialValue={value}
-                    updateData={updateData}
-                />
-            ))}
+            {Object.entries(data).map(([field, value]) =>
+                isCheckbox ? (
+                    <FormCheckbox
+                        key={field}
+                        field={field}
+                        initialValue={value}
+                        updateData={updateData}
+                    />
+                ) : (
+                    <NatureInput
+                        key={field}
+                        field={field}
+                        initialValue={value}
+                        updateData={updateData}
+                    />
+                )
+            )}
             <input type='submit' value='Submit' />
         </form>
     );
@@ -73,6 +81,28 @@ function NatureInput({ field, initialValue, updateData }) {
         <div>
             <label htmlFor={field}>{field}: </label>
             <input id={field} value={value} onChange={handleChange} />
+        </div>
+    );
+}
+
+function FormCheckbox({ field, initialValue, updateData }) {
+    const [value, setValue] = useState(initialValue);
+
+    function handleChange(e) {
+        const newValue = e.target.checked;
+        setValue(newValue);
+        updateData(field, newValue);
+    }
+    return (
+        <div>
+            <label htmlFor={field}>{field}: </label>
+            <input
+                type='checkbox'
+                id={field}
+                name={field}
+                value={value}
+                onChange={handleChange}
+            ></input>
         </div>
     );
 }
