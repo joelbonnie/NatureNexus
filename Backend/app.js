@@ -20,6 +20,7 @@ let plantsRouter = require('./routes/plants');
 let rangersRouter = require('./routes/rangers');
 let visitorsRouter = require('./routes/visitors');
 let entityRouter = require('./routes/entity');
+let statisticsRouter = require('./routes/statistics');
 
 let app = express();
 
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/animals', animalsRouter);
+app.use('/statistics', statisticsRouter);
 
 app.use('/equipment', equipmentRouter);
 app.use('/facilities', facilitiesRouter);

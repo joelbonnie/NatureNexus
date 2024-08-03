@@ -22,11 +22,16 @@ function App() {
 
             {tables.map((t) => (
                 <div key={t}>
-                    <Link to={`/${t}`} relative='path'>
+                    <Link to={`/entity/${t}`} relative='path'>
                         {t}
                     </Link>
                 </div>
             ))}
+            <div key={'Statistics'}>
+                <Link to={'/statistics'} relative='path'>
+                    {'STATISTICS'}
+                </Link>
+            </div>
         </div>
     );
 }
