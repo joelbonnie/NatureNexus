@@ -82,32 +82,29 @@ router.post('/:entityName/insert', async function (req, res, next) {
     // await db.fetchQueryResults('commit'); // TODO: this currently doesn't work. figure out how to commit
 });
 
+/* DELETE entity by ID*/
+router.delete('/:entityName/:id/delete', async function (req, res, next) {
+    const { entityName, id: id_value } = req.params;
+
+    var query = `delete from ${entityName} where ${getWhereClauses(
+        id_value,
+        entityName
+    )}`;
+
+    console.log(query);
+    const results = await db.fetchQueryResults(query);
+    res.status(200).send(results);
+});
+
 /* GET specific entity info by ID */
 router.get('/:entityName/:id', async function (req, res, next) {
     const { entityName, id: id_value } = req.params;
     const attributes = req.query.attributes;
 
-    var query = `select ${attributes} from ${entityName} where `;
-
-    if (id_value.includes('_')) {
-        // Entity has multiple primary keys
-        const id_values = id_value.split('_');
-        const id_keys = UNIQUE_ID_NAMES[entityName];
-
-        const whereClauses = [];
-        for (var i = 0; i < id_keys.length; i++) {
-            whereClauses.push(`${id_keys[i]} = '${id_values[i]}'`);
-        }
-
-        query = query.concat(whereClauses.join(' and '));
-    } else {
-        // Entity only has one primary key
-        const id_key =
-            UNIQUE_ID_NAMES[entityName] || `${entityName}id`.toUpperCase();
-        const whereClause = `${id_key} = '${id_value}'`;
-
-        query = query.concat(whereClause);
-    }
+    var query = `select ${attributes} from ${entityName} where ${getWhereClauses(
+        id_value,
+        entityName
+    )}`;
 
     console.log(query);
     db.fetchQueryResults(query)
@@ -141,4 +138,24 @@ router.get('/:entityName', async function (req, res, next) {
         });
 });
 
+function getWhereClauses(id_value, entityName) {
+    if (id_value.includes('_')) {
+        // Entity has multiple primary keys
+        const id_values = id_value.split('_');
+        const id_keys = UNIQUE_ID_NAMES[entityName];
+
+        const whereClauses = [];
+        for (var i = 0; i < id_keys.length; i++) {
+            whereClauses.push(`${id_keys[i]} = '${id_values[i]}'`);
+        }
+
+        return whereClauses.join(' and ');
+    } else {
+        // Entity only has one primary key
+        const id_key =
+            UNIQUE_ID_NAMES[entityName] || `${entityName}id`.toUpperCase();
+
+        return `${id_key} = '${id_value}'`;
+    }
+}
 module.exports = router;

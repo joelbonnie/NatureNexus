@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { NatureForm } from './NatureForm';
 import { ErrorMessage } from './ErrorMessage';
 
@@ -46,6 +46,26 @@ export function Entity() {
         console.log(currentEntity);
     }
 
+    function deleteEntity() {
+        fetch(
+            `http://localhost:${
+                import.meta.env.VITE_BACKEND_PORT
+            }/entity/${entityName}/${id}/delete`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        )
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+    
     function handleResponse(response) {
         if (!response.ok) {
             return response.json().then((error) => {
@@ -60,6 +80,13 @@ export function Entity() {
     return (
         <div>
             <ErrorMessage errorMessage={errorMessage}></ErrorMessage>
+
+            <Link to={`..`} relative='path'>
+                <button onClick={() => deleteEntity()}>
+                    Delete this {entityName} Entry
+                </button>
+            </Link>
+
             <div>
                 <NatureForm
                     getData={getAttributes}
