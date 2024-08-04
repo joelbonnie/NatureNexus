@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { ErrorMessage } from './ErrorMessage';
 
 const UNIQUE_ID_NAMES = {
     HABITAT: 'HABITATNAME',
@@ -9,8 +10,8 @@ const UNIQUE_ID_NAMES = {
     FROG: 'ANIMALID',
     WOLF: 'ANIMALID',
     OWL: 'ANIMALID',
-    MOM: 'animalId_Mom',
-    DAD: 'animalId_Dad',
+    MOM: 'ANIMALID_CHILD',
+    DAD: 'ANIMALID_CHILD',
     FOREST: 'HABITATNAME',
     POND: 'HABITATNAME',
     SPECIES: 'SPECIESNAME',
@@ -28,6 +29,7 @@ export function Entities() {
 
     const [currentEntities, setCurrentEntities] = useState([]);
     const [filterInput, setFilterInput] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleFilterInput = (e) => {
         setFilterInput(e.target.value);
@@ -39,8 +41,9 @@ export function Entities() {
                 import.meta.env.VITE_BACKEND_PORT
             }/entity/${entityName}`
         )
-            .then((response) => response.json())
-            .then((data) => setCurrentEntities(data));
+            .then(handleResponse)
+            .then((data) => setCurrentEntities(data))
+            .catch((error) => console.log(error.message));
     }, []);
 
     console.log(currentEntities);
@@ -65,8 +68,20 @@ export function Entities() {
                 import.meta.env.VITE_BACKEND_PORT
             }/entity/${entityName}?filter=${filterInput}`
         )
-            .then((response) => response.json())
-            .then((data) => setCurrentEntities(data));
+            .then(handleResponse)
+            .then((data) => setCurrentEntities(data))
+            .catch((error) => console.log(error.message));
+    }
+
+    function handleResponse(response) {
+        if (!response.ok) {
+            return response.json().then((error) => {
+                const errorMessage = error.code || 'Something went wrong';
+                setErrorMessage(errorMessage);
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
     }
 
     return (
@@ -76,6 +91,8 @@ export function Entities() {
                     <button>Add new {entityName}</button>
                 </Link>
             </div>
+
+            <ErrorMessage errorMessage={errorMessage}></ErrorMessage>
 
             <div>
                 <form onSubmit={submitFilter}>
@@ -94,7 +111,9 @@ export function Entities() {
                     const entityId = getIdValueOfEntity(e);
                     return (
                         <Link
-                            to={`../${entityName}/${encodeURIComponent(entityId)}`}
+                            to={`../${entityName}/${encodeURIComponent(
+                                entityId
+                            )}`}
                             relative='path'
                             key={entityName + '_' + String(entityId)}
                         >

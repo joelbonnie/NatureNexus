@@ -1,13 +1,13 @@
 import { NatureForm } from './NatureForm';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
+import { ErrorMessage } from './ErrorMessage';
+
+const SUBMITTED = 'submitted';
 
 export function AddEntity() {
     const { entityName } = useParams();
-    const [data, setData] = useState({});
-    const [submitted, setSubmitted] = useState(false);
-
-    console.log('entity name', entityName);
+    const [submitState, setSubmitState] = useState('');
 
     function getAttributes() {
         const response = fetch(
@@ -15,7 +15,18 @@ export function AddEntity() {
                 import.meta.env.VITE_BACKEND_PORT
             }/entity/${entityName}/attributeNames`
         )
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    console.log(response);
+                    return response.json().then((error) => {
+                        const errorMessage =
+                            error.code || 'Something went wrong';
+                        setSubmitState(errorMessage);
+                        throw new Error(errorMessage);
+                    });
+                }
+                return response.json();
+            })
             .then((data) =>
                 Promise.resolve(
                     data.reduce((acc, curr) => {
@@ -23,14 +34,13 @@ export function AddEntity() {
                         return acc;
                     }, {})
                 )
-            );
-        console.log('response', response);
+            )
+            .catch((error) => console.log(error.message));
         return response;
     }
 
     function submit(formData) {
         console.log('form data', formData);
-        setData(formData);
 
         fetch(
             `http://localhost:${
@@ -45,11 +55,20 @@ export function AddEntity() {
             }
         )
             .then((response) => {
-                console.log(response);
-                setSubmitted(true);
+                if (!response.ok) {
+                    console.log(response);
+                    return response.json().then((error) => {
+                        const errorMessage =
+                            error.code || 'Something went wrong';
+                        setSubmitState(errorMessage);
+                        throw new Error(errorMessage);
+                    });
+                }
+                setSubmitState(SUBMITTED);
             })
             .catch((error) => {
-                console.log(error);
+                // This catch block will only catch errors thrown within the .then() block
+                console.log(error.message);
             });
     }
 
@@ -62,13 +81,14 @@ export function AddEntity() {
                     isCheckbox={false}
                 ></NatureForm>
             </div>
+
             <div>
-                {submitted ? (
+                {submitState === SUBMITTED ? (
                     <h4>
-                        Successfully Submitted! Refresh to submit another entry.
+                        Successfully submitted! Refresh to submit another entry.
                     </h4>
                 ) : (
-                    <h4></h4>
+                    <ErrorMessage errorMessage={submitState}></ErrorMessage>
                 )}
             </div>
         </div>

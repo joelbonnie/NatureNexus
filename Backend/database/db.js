@@ -1,4 +1,5 @@
 const oracledb = require('oracledb');
+oracledb.autoCommit = true;
 
 const dbConfig = {
     user: process.env.ORACLE_USER,
@@ -92,11 +93,7 @@ async function fetchQueryResults(query) {
         const result = await connection.execute(query, [], {
             outFormat: oracledb.OBJECT,
         });
-        // console.log(result.metaData);
         return result.rows;
-    }).catch(() => {
-        console.log('ERROR');
-        return [];
     });
 }
 

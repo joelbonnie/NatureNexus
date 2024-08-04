@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { NatureForm } from './NatureForm';
+import { ErrorMessage } from './ErrorMessage';
 
 export function Entity() {
     const { entityName, id } = useParams();
     const [currentEntity, setCurrentEntity] = useState({});
+    const [errorMessage, setErrorMessage] = useState('');
 
     console.log('current entity', currentEntity);
 
@@ -14,7 +16,7 @@ export function Entity() {
                 import.meta.env.VITE_BACKEND_PORT
             }/entity/${entityName}/attributeNames`
         )
-            .then((response) => response.json())
+            .then(handleResponse)
             .then((data) =>
                 Promise.resolve(
                     data.reduce((acc, curr) => {
@@ -38,14 +40,26 @@ export function Entity() {
                 import.meta.env.VITE_BACKEND_PORT
             }/entity/${entityName}/${id}?attributes=${wantedAttributes}`
         )
-            .then((response) => response.json())
+            .then(handleResponse)
             .then((data) => setCurrentEntity(data[0]));
 
         console.log(currentEntity);
     }
 
+    function handleResponse(response) {
+        if (!response.ok) {
+            return response.json().then((error) => {
+                const errorMessage = error.code || 'Something went wrong';
+                setErrorMessage(errorMessage);
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    }
+
     return (
         <div>
+            <ErrorMessage errorMessage={errorMessage}></ErrorMessage>
             <div>
                 <NatureForm
                     getData={getAttributes}

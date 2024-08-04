@@ -43,8 +43,12 @@ router.get('/:entityName/attributeNames', async function (req, res, next) {
     const query = `select column_name from user_tab_columns where table_name = '${entityName}'`;
     console.log(query);
 
-    const results = await db.fetchQueryResults(query);
-    res.status(200).send(results);
+    db.fetchQueryResults(query)
+        .then((results) => res.status(200).send(results))
+        .catch((e) => {
+            console.log('Error:', e);
+            res.status(500).send(e);
+        });
 });
 
 router.post('/:entityName/insert', async function (req, res, next) {
@@ -67,10 +71,15 @@ router.post('/:entityName/insert', async function (req, res, next) {
     const query = `insert into ${entityName} (${columns}) values (${vals})`;
 
     console.log(query);
-    const results = await db.fetchQueryResults(query);
-    await db.fetchQueryResults('commit'); // TODO: this currently doesn't work. figure out how to commit
-    // TODO: error handling
-    res.send(results);
+
+    db.fetchQueryResults(query)
+        .then((results) => res.status(200).send(results))
+        .catch((e) => {
+            console.log('Error:', e);
+            res.status(500).send(e);
+        });
+    // const results = await db.fetchQueryResults(query);
+    // await db.fetchQueryResults('commit'); // TODO: this currently doesn't work. figure out how to commit
 });
 
 /* GET specific entity info by ID */
@@ -96,13 +105,17 @@ router.get('/:entityName/:id', async function (req, res, next) {
         const id_key =
             UNIQUE_ID_NAMES[entityName] || `${entityName}id`.toUpperCase();
         const whereClause = `${id_key} = '${id_value}'`;
-        
+
         query = query.concat(whereClause);
     }
 
     console.log(query);
-    const results = await db.fetchQueryResults(query);
-    res.status(200).send(results);
+    db.fetchQueryResults(query)
+        .then((results) => res.status(200).send(results))
+        .catch((e) => {
+            console.log('Error:', e);
+            res.status(500).send(e);
+        });
 });
 
 /* GET entity listing. */
@@ -120,8 +133,12 @@ router.get('/:entityName', async function (req, res, next) {
 
     console.log(query);
 
-    const results = await db.fetchQueryResults(query);
-    res.status(200).send(results);
+    db.fetchQueryResults(query)
+        .then((results) => res.status(200).send(results))
+        .catch((e) => {
+            console.log('Error:', e);
+            res.status(500).send(e);
+        });
 });
 
 module.exports = router;
