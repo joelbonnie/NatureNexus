@@ -12,7 +12,7 @@ export function Entity() {
         const response = fetch(
             `http://localhost:${
                 import.meta.env.VITE_BACKEND_PORT
-            }/entity/${entityName}/${id}/attributeNames`
+            }/entity/${entityName}/attributeNames`
         )
             .then((response) => response.json())
             .then((data) =>

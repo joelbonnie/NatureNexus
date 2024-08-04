@@ -14,9 +14,13 @@ const UNIQUE_ID_NAMES = {
     FOREST: 'HABITATNAME',
     POND: 'HABITATNAME',
     SPECIES: 'SPECIESNAME',
-    FAMILY: 'taxonomicalFamily',
-    // TODO: id names are not correct for:
-    // area, livesin, manages, monitors, plantedby, visitor
+    FAMILY: 'TAXONOMICALFAMILY',
+    AREA: 'COORDINATES',
+    PLANTEDBY: 'PLANTID',
+    VISITOR: 'PASSID',
+    MANAGES: ['RANGERID', 'FACILITYNAME'],
+    LIVESIN: ['ANIMALID', 'HABITATNAME'],
+    MONITORS: ['HABITATNAME', 'RANGERID'],
 };
 
 export function Entities() {
@@ -39,8 +43,19 @@ export function Entities() {
             .then((data) => setCurrentEntities(data));
     }, []);
 
-    const id = (UNIQUE_ID_NAMES[entityName] || `${entityName}id`).toUpperCase();
-    console.log(id);
+    console.log(currentEntities);
+    var id_key = UNIQUE_ID_NAMES[entityName] || `${entityName}id`.toUpperCase();
+
+    function getIdValueOfEntity(entity) {
+        var id_value = '';
+        if (typeof id_key === 'string') {
+            id_value = entity[id_key];
+        } else {
+            id_value = id_key.map((key) => entity[key]).join('_');
+        }
+        console.log(id_value);
+        return id_value;
+    }
 
     function submitFilter(e) {
         e.preventDefault();
@@ -57,6 +72,12 @@ export function Entities() {
     return (
         <div>
             <div>
+                <Link to={`../${entityName}/addEntity`} relative='path'>
+                    <button>Add new {entityName}</button>
+                </Link>
+            </div>
+
+            <div>
                 <form onSubmit={submitFilter}>
                     <input
                         type='text'
@@ -69,28 +90,30 @@ export function Entities() {
             </div>
 
             <div>
-                {currentEntities.map((e) => (
-                    <Link
-                        to={`../${entityName}/${e[id]}`}
-                        relative='path'
-                        key={entityName + '_' + String(e[id])}
-                    >
-                        <EntityListing
-                            entity={e}
-                            entityName={entityName}
-                            id={id}
-                        />
-                    </Link>
-                ))}
+                {currentEntities.map((e) => {
+                    const entityId = getIdValueOfEntity(e);
+                    return (
+                        <Link
+                            to={`../${entityName}/${encodeURIComponent(entityId)}`}
+                            relative='path'
+                            key={entityName + '_' + String(entityId)}
+                        >
+                            <EntityListing
+                                entityName={entityName}
+                                id={entityId}
+                            />
+                        </Link>
+                    );
+                })}
             </div>
         </div>
     );
 }
 
-function EntityListing({ entity, entityName, id }) {
+function EntityListing({ entityName, id }) {
     return (
         <h3>
-            {entityName} {entity[id]}
+            {entityName} {id}
         </h3>
     );
 }

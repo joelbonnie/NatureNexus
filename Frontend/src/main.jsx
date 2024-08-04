@@ -11,6 +11,7 @@ import { Having } from './pages/Having.jsx';
 import { Nested } from './pages/Nested.jsx';
 import { Division } from './pages/Division.jsx';
 import { NatureForm } from './pages/NatureForm.jsx';
+import { AddEntity } from './pages/AddEntity.jsx';
 
 const router = createBrowserRouter([
     {
@@ -22,12 +23,16 @@ const router = createBrowserRouter([
         element: <NatureForm />,
     },
     {
+        path: '/entity/:entityName/addEntity',
+        element: <AddEntity />, // Page to add an entity
+    },
+    {
         path: '/entity/:entityName/',
         element: <Entities />, // Entity page (list of a specific entity)
     },
     {
         path: '/entity/:entityName/:id',
-        element: <Entity />, // specific entity instance page
+        element: <Entity />, // Specific entity instance page
     },
     {
         path: '/statistics/',
