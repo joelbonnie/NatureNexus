@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { NatureForm } from './NatureForm';
 import { ErrorMessage } from './ErrorMessage';
 
@@ -7,6 +7,7 @@ export function Entity() {
     const { entityName, id } = useParams();
     const [currentEntity, setCurrentEntity] = useState({});
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     console.log('current entity', currentEntity);
 
@@ -59,7 +60,16 @@ export function Entity() {
             }
         )
             .then((response) => {
-                console.log(response);
+                if (!response.ok) {
+                    return response.json().then((error) => {
+                        const errorMessage =
+                            error.code || 'Something went wrong';
+                        setErrorMessage(errorMessage);
+                        throw new Error(errorMessage);
+                    });
+                }
+                navigate(`../entity/${entityName}`);
+                return response.json();
             })
             .catch((error) => {
                 console.log(error);
@@ -81,11 +91,9 @@ export function Entity() {
         <div>
             <ErrorMessage errorMessage={errorMessage}></ErrorMessage>
 
-            <Link to={`..`} relative='path'>
-                <button onClick={() => deleteEntity()}>
-                    Delete this {entityName} Entry
-                </button>
-            </Link>
+            <button onClick={() => deleteEntity()}>
+                Delete this {entityName} Entry
+            </button>
 
             <Link to={`./update`}>
                 <button>Update this {entityName} Entry</button>

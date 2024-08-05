@@ -10,8 +10,8 @@ const UNIQUE_ID_NAMES = {
     FROG: 'ANIMALID',
     WOLF: 'ANIMALID',
     OWL: 'ANIMALID',
-    MOM: 'animalId_Mom',
-    DAD: 'animalId_Dad',
+    MOM: 'ANIMALID_CHILD',
+    DAD: 'ANIMALID_CHILD',
     FOREST: 'HABITATNAME',
     POND: 'HABITATNAME',
     SPECIES: 'SPECIESNAME',
@@ -86,8 +86,6 @@ router.post('/:entityName/insert', async function (req, res, next) {
             console.log('Error:', e);
             res.status(500).send(e);
         });
-    // const results = await db.fetchQueryResults(query);
-    // await db.fetchQueryResults('commit'); // TODO: this currently doesn't work. figure out how to commit
 });
 
 router.post('/:entityName/:id/update', (req, res, next) => {
@@ -128,8 +126,12 @@ router.delete('/:entityName/:id/delete', async function (req, res, next) {
     )}`;
 
     console.log(query);
-    const results = await db.fetchQueryResults(query);
-    res.status(200).send(results);
+    db.fetchQueryResults(query)
+        .then((results) => res.status(200).send(results))
+        .catch((e) => {
+            console.log('Error:', e);
+            res.status(500).send(e);
+        });
 });
 
 /* GET specific entity info by ID */
