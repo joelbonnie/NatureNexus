@@ -97,6 +97,15 @@ async function fetchQueryResults(query) {
     });
 }
 
+async function fetchQueryResultsSecure(query, params) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(query, params, {
+            outFormat: oracledb.OBJECT,
+        });
+        return result.rows;
+    });
+}
+
 module.exports = {
     initializeConnectionPool,
     testOracleConnection,
@@ -104,4 +113,5 @@ module.exports = {
     fetchAnimalsFromDb,
     fetchTablesFromDb,
     fetchQueryResults,
+    fetchQueryResultsSecure,
 };

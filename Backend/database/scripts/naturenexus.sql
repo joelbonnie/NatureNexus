@@ -27,15 +27,15 @@ DROP TABLE Family;
 
 
 CREATE TABLE Family(
-	taxonomicalFamily CHAR(30) PRIMARY KEY,
-	taxonomicalOrder CHAR(30)
+	taxonomicalFamily VARCHAR(30) PRIMARY KEY,
+	taxonomicalOrder VARCHAR(30)
 );
 
 GRANT SELECT ON Family TO PUBLIC;
 
 CREATE TABLE Species(
-	speciesName CHAR(30) PRIMARY KEY,
-	taxonomicalFamily CHAR(30),
+	speciesName VARCHAR(30) PRIMARY KEY,
+	taxonomicalFamily VARCHAR(30),
 	FOREIGN KEY (taxonomicalFamily) REFERENCES Family(taxonomicalFamily)
 );
 
@@ -43,10 +43,10 @@ GRANT SELECT ON Species TO PUBLIC;
 
 CREATE TABLE Animal (
 	animalId INT PRIMARY KEY,
-	health CHAR(30),
+	health VARCHAR(30),
 	age INT,
-	animalName CHAR(30) UNIQUE,
-	speciesName CHAR(30),
+	animalName VARCHAR(30) UNIQUE,
+	speciesName VARCHAR(30),
 	lastSeen DATE,
 	FOREIGN KEY (speciesName) REFERENCES Species(speciesName)
 );
@@ -58,7 +58,7 @@ GRANT SELECT ON Animal TO PUBLIC;
 
 CREATE TABLE Rabbit (
 	animalId INT PRIMARY KEY,
-	furPattern CHAR(30), 
+	furPattern VARCHAR(30), 
 	FOREIGN KEY(animalId) REFERENCES Animal(animalId)
 		ON DELETE CASCADE
 );
@@ -68,7 +68,7 @@ GRANT SELECT ON Rabbit TO PUBLIC;
 
 CREATE TABLE Owl (
 	animalId INT PRIMARY KEY,
-	plumage CHAR(30), 
+	plumage VARCHAR(30), 
   FOREIGN KEY(animalId) REFERENCES Animal(animalId)
     ON DELETE CASCADE
 );
@@ -78,7 +78,7 @@ GRANT SELECT ON Owl TO PUBLIC;
 
 CREATE TABLE Wolf (
 	animalId INT PRIMARY KEY,
-	furPattern CHAR(30), 
+	furPattern VARCHAR(30), 
 	FOREIGN KEY(animalId) REFERENCES Animal(animalId)
 	  ON DELETE CASCADE
 );
@@ -88,7 +88,7 @@ GRANT SELECT ON Wolf TO PUBLIC;
 
 CREATE TABLE Frog (
 	animalId INT PRIMARY KEY,
-	skinPattern CHAR(30), 
+	skinPattern VARCHAR(30), 
 	FOREIGN KEY(animalId) REFERENCES Animal(animalId)
 	  ON DELETE CASCADE
 );
@@ -117,15 +117,15 @@ GRANT SELECT ON Dad TO PUBLIC;
 
 
 CREATE TABLE Area (
-	coordinates CHAR(30) PRIMARY KEY,
-	areaName CHAR(30)
+	coordinates VARCHAR(30) PRIMARY KEY,
+	areaName VARCHAR(30)
 );
 
 GRANT SELECT ON Area TO PUBLIC;
 
 CREATE TABLE Habitat (
-	habitatName CHAR(30) PRIMARY KEY,
-	coordinates CHAR(30),
+	habitatName VARCHAR(30) PRIMARY KEY,
+	coordinates VARCHAR(30),
 	FOREIGN KEY (coordinates) REFERENCES Area(coordinates) 
 );
 
@@ -133,8 +133,8 @@ GRANT SELECT ON Habitat TO PUBLIC;
 
 
 CREATE TABLE Pond (
-	habitatName CHAR(30) PRIMARY KEY,
-	waterQuality CHAR(30), 
+	habitatName VARCHAR(30) PRIMARY KEY,
+	waterQuality VARCHAR(30), 
 	FOREIGN KEY(habitatName) REFERENCES Habitat(habitatName)
 	  ON DELETE CASCADE
 );
@@ -143,8 +143,8 @@ GRANT SELECT ON Pond TO PUBLIC;
 
 
 CREATE TABLE Forest (
-	habitatName CHAR(30) PRIMARY KEY,
-	soilQuality CHAR(30), 
+	habitatName VARCHAR(30) PRIMARY KEY,
+	soilQuality VARCHAR(30), 
 	FOREIGN KEY(habitatName) REFERENCES Habitat(habitatName)
 	  ON DELETE CASCADE
 );
@@ -154,7 +154,7 @@ GRANT SELECT ON Forest TO PUBLIC;
 
 CREATE TABLE LivesIn (
 	animalId INT,
-	habitatName CHAR(30),
+	habitatName VARCHAR(30),
 	PRIMARY KEY(animalId, habitatName),
 	FOREIGN KEY(animalId) REFERENCES Animal(animalId)
 	  ON DELETE CASCADE,
@@ -167,10 +167,10 @@ GRANT SELECT ON LivesIn TO PUBLIC;
 
 CREATE TABLE Plant (
 	plantId INT PRIMARY KEY,
-	species CHAR(30),
-	coordinates CHAR(30),
-	health CHAR(30),
-	habitatName CHAR(30) NOT NULL,
+	species VARCHAR(30),
+	coordinates VARCHAR(30),
+	health VARCHAR(30),
+	habitatName VARCHAR(30) NOT NULL,
 	FOREIGN KEY(habitatName) REFERENCES Habitat(habitatName)
 	  ON DELETE CASCADE
 );
@@ -180,7 +180,7 @@ GRANT SELECT ON Plant TO PUBLIC;
 
 CREATE TABLE ParkRanger (
 	rangerId INT PRIMARY KEY,
-	rangerName CHAR(30),
+	rangerName VARCHAR(30),
 	dateJoined DATE
 );
 
@@ -198,7 +198,7 @@ GRANT SELECT ON PlantedBy TO PUBLIC;
 
 
 CREATE TABLE Monitors (
-	habitatName CHAR(30),
+	habitatName VARCHAR(30),
 	rangerId INT,
 	PRIMARY KEY(habitatName, rangerId),
 	FOREIGN KEY(rangerId) REFERENCES ParkRanger(rangerId) ON DELETE CASCADE,
@@ -209,8 +209,8 @@ GRANT SELECT ON Monitors TO PUBLIC;
 
 
 CREATE TABLE Facility (
-	facilityName CHAR(50) PRIMARY KEY,
-	coordinates CHAR(30),
+	facilityName VARCHAR(50) PRIMARY KEY,
+	coordinates VARCHAR(30),
 	FOREIGN KEY(coordinates) REFERENCES Area(coordinates)
 );
 
@@ -219,7 +219,7 @@ GRANT SELECT ON Facility TO PUBLIC;
 
 CREATE TABLE Manages (
 	rangerId INT,
-	facilityName CHAR(50),
+	facilityName VARCHAR(50),
 	PRIMARY KEY(rangerId, facilityName),
 	FOREIGN KEY(rangerId) REFERENCES ParkRanger(rangerId) ON DELETE CASCADE,
 	FOREIGN KEY(facilityName) REFERENCES Facility(facilityName) ON DELETE CASCADE
@@ -232,8 +232,8 @@ GRANT SELECT ON Manages TO PUBLIC;
 
 CREATE TABLE Equipment (
 	equipmentId INT PRIMARY KEY,
-	equipmentType CHAR(50),
-	facilityName CHAR(50),
+	equipmentType VARCHAR(50),
+	facilityName VARCHAR(50),
 	FOREIGN KEY(facilityName) references Facility(facilityName)
 );
 
@@ -492,4 +492,4 @@ VALUES (00005,DATE '2023-11-12', 0003);
 INSERT INTO Visitor(passId, dateVisited, rangerId)
 VALUES (00006,DATE '2024-04-07', 0004);
 
-COMMIT;
+COMMIT; 

@@ -45,9 +45,10 @@ router.get('/habitatMembers/:habitatName', async function (req, res, next) {
     const { habitatName } = req.params;
     console.log(habitatName);
     const query = `SELECT A.ANIMALID,A.ANIMALNAME FROM ANIMAL A,LIVESIN L,HABITAT H
-    where A.animalid = L.animalid AND H.habitatname = L.habitatname AND H.habitatname = '${habitatName}'`;
-    console.log(query);
-    const results = await db.fetchQueryResults(query);
+    where A.animalid = L.animalid AND H.habitatname = L.habitatname AND H.habitatname = :habitatName`;
+
+    // Parametrized inputs for sanitization
+    const results = await db.fetchQueryResultsSecure(query, [habitatName]);
     console.log(results);
     res.status(200).send(results);
 });
