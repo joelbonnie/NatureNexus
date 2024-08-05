@@ -65,7 +65,7 @@ export function Entity() {
                 console.log(error);
             });
     }
-    
+
     function handleResponse(response) {
         if (!response.ok) {
             return response.json().then((error) => {
@@ -85,6 +85,10 @@ export function Entity() {
                 <button onClick={() => deleteEntity()}>
                     Delete this {entityName} Entry
                 </button>
+            </Link>
+
+            <Link to={`./update`}>
+                <button>Update this {entityName} Entry</button>
             </Link>
 
             <div>
