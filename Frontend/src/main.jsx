@@ -12,6 +12,7 @@ import { Nested } from './pages/Nested.jsx';
 import { Division } from './pages/Division.jsx';
 import { NatureForm } from './pages/NatureForm.jsx';
 import { AddEntity } from './pages/AddEntity.jsx';
+import { Join } from './pages/Join.jsx';
 
 const router = createBrowserRouter([
     {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
     {
         path: '/statistics/plantSpecies',
         element: <Division />, // Page for Division Query
+    },
+    {
+        path: '/statistics/habitatMembers',
+        element: <Join />, // Page for Division Query
     },
 ]);
 

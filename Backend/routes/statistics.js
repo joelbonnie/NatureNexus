@@ -41,4 +41,15 @@ router.get('/plantSpecies', async function (req, res, next) {
     res.status(200).send(results);
 });
 
+router.get('/habitatMembers/:habitatName', async function (req, res, next) {
+    const { habitatName } = req.params;
+    console.log(habitatName);
+    const query = `SELECT A.ANIMALID,A.ANIMALNAME FROM ANIMAL A,LIVESIN L,HABITAT H
+    where A.animalid = L.animalid AND H.habitatname = L.habitatname AND H.habitatname = '${habitatName}'`;
+    console.log(query);
+    const results = await db.fetchQueryResults(query);
+    console.log(results);
+    res.status(200).send(results);
+});
+
 module.exports = router;

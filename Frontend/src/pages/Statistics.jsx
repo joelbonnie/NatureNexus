@@ -81,6 +81,12 @@ export function Statistics() {
                     }
                 </Link>
             </div>
+
+            <div key={'Q5'}>
+                <Link to={'/statistics/habitatMembers'} relative='path'>
+                    {'Find the animals that live in a particular habitat:\n'}
+                </Link>
+            </div>
         </div>
     );
 }
