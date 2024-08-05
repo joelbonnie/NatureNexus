@@ -13,6 +13,7 @@ import { Division } from './pages/Division.jsx';
 import { NatureForm } from './pages/NatureForm.jsx';
 import { AddEntity } from './pages/AddEntity.jsx';
 import { Join } from './pages/Join.jsx';
+import { UpdateEntity } from './pages/UpdateEntity.jsx';
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
     {
         path: '/entity/:entityName/',
         element: <Entities />, // Entity page (list of a specific entity)
+    },
+    {
+        path: '/entity/:entityName/:id/update',
+        element: <UpdateEntity />, // Specific entity instance page
     },
     {
         path: '/entity/:entityName/:id',

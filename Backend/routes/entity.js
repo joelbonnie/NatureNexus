@@ -59,13 +59,15 @@ router.post('/:entityName/insert', async function (req, res, next) {
         return val !== '';
     });
     const columns = valuesToInsert.map(([col, val]) => col).join(',');
-    const vals = valuesToInsert.map(([col, val]) => {
-        if (col === 'LASTSEEN' || col.includes('DATE')) {
-            return `DATE '${val}'`
-        } else {
-            return `'${val}'`
-        }
-    } ).join(',');
+    const vals = valuesToInsert
+        .map(([col, val]) => {
+            if (col === 'LASTSEEN' || col.includes('DATE')) {
+                return `DATE '${val}'`;
+            } else {
+                return `'${val}'`;
+            }
+        })
+        .join(',');
     const id_name =
         UNIQUE_ID_NAMES[entityName] || `${entityName}id`.toUpperCase();
 
@@ -88,6 +90,34 @@ router.post('/:entityName/insert', async function (req, res, next) {
     // await db.fetchQueryResults('commit'); // TODO: this currently doesn't work. figure out how to commit
 });
 
+router.post('/:entityName/:id/update', (req, res, next) => {
+    const { entityName, id } = req.params;
+    const values = req.body;
+
+    const changes = Object.entries(values)
+        .map(([col, val]) => {
+            if (col === 'LASTSEEN' || col.includes('DATE')) {
+                return `${col} = DATE '${val}'`;
+            } else {
+                return `${col} = '${val}'`;
+            }
+        })
+        .join(', ');
+
+    const query = `UPDATE ${entityName} SET ${changes} WHERE ${getWhereClauses(
+        id,
+        entityName
+    )}`;
+    console.log(query);
+
+    db.fetchQueryResults(query)
+        .then((results) => res.status(200).send(results))
+        .catch((e) => {
+            console.log('Error:', e);
+            res.status(500).send(e);
+        });
+});
+
 /* DELETE entity by ID*/
 router.delete('/:entityName/:id/delete', async function (req, res, next) {
     const { entityName, id: id_value } = req.params;
@@ -105,7 +135,8 @@ router.delete('/:entityName/:id/delete', async function (req, res, next) {
 /* GET specific entity info by ID */
 router.get('/:entityName/:id', async function (req, res, next) {
     const { entityName, id: id_value } = req.params;
-    const attributes = req.query.attributes;
+    const attributes =
+        req.query.attributes === 'all' ? '*' : req.query.attributes;
 
     var query = `select ${attributes} from ${entityName} where ${getWhereClauses(
         id_value,

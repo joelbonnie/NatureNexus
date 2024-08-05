@@ -65,7 +65,7 @@ export function Entity() {
                 console.log(error);
             });
     }
-    
+
     function handleResponse(response) {
         if (!response.ok) {
             return response.json().then((error) => {
