@@ -59,7 +59,13 @@ router.post('/:entityName/insert', async function (req, res, next) {
         return val !== '';
     });
     const columns = valuesToInsert.map(([col, val]) => col).join(',');
-    const vals = valuesToInsert.map(([col, val]) => `'${val}'`).join(',');
+    const vals = valuesToInsert.map(([col, val]) => {
+        if (col === 'LASTSEEN' || col.includes('DATE')) {
+            return `DATE '${val}'`
+        } else {
+            return `'${val}'`
+        }
+    } ).join(',');
     const id_name =
         UNIQUE_ID_NAMES[entityName] || `${entityName}id`.toUpperCase();
 
