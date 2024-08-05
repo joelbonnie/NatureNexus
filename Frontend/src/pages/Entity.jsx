@@ -87,6 +87,10 @@ export function Entity() {
                 </button>
             </Link>
 
+            <Link to={`./update`}>
+                <button>Update this {entityName} Entry</button>
+            </Link>
+
             <div>
                 <NatureForm
                     getData={getAttributes}

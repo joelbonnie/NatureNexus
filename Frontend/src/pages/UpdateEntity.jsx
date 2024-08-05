@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { NatureForm } from './NatureForm';
+import { ErrorMessage } from './ErrorMessage';
 
 export function UpdateEntity() {
     const { entityName, id } = useParams();
-    const [currentEntity, setCurrentEntity] = useState({});
+    const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
 
     function getEntityData() {
@@ -24,7 +25,6 @@ export function UpdateEntity() {
                         obj[key] = obj[key].split('T')[0];
                     }
                 }
-                console.log(obj);
                 return Promise.resolve(obj);
             });
         return response;
@@ -42,9 +42,7 @@ export function UpdateEntity() {
     }
 
     function handleSubmit(data) {
-        console.log(data);
-
-        const response = fetch(
+        fetch(
             `http://localhost:${
                 import.meta.env.VITE_BACKEND_PORT
             }/entity/${entityName}/${id}/update`,
@@ -55,11 +53,21 @@ export function UpdateEntity() {
                     'Content-Type': 'application/json',
                 },
             }
-        );
+        ).then((r) => {
+            if (r.status == 200) {
+                console.log('success');
+                navigate(`/entity/${entityName}`);
+            } else {
+                setErrorMessage(
+                    'Error updating. Please double check your values'
+                );
+            }
+        });
     }
 
     return (
         <>
+            <ErrorMessage errorMessage={errorMessage} />
             <NatureForm getData={getEntityData} submitChanges={handleSubmit} />
         </>
     );
