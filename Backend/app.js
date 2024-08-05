@@ -9,7 +9,6 @@ require('dotenv').config();
 const db = require('./database/db');
 console.log(process.env.ORACLE_USER);
 db.initializeConnectionPool();
-setTimeout(() => db.fetchAnimalsFromDb().then((r) => console.log(r)), 100);
 
 let indexRouter = require('./routes/index');
 let entityRouter = require('./routes/entity');
