@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { NatureForm } from './NatureForm';
 import { ErrorMessage } from './ErrorMessage';
 
@@ -91,9 +91,11 @@ export function Entity() {
         <div>
             <ErrorMessage errorMessage={errorMessage}></ErrorMessage>
 
-            <button onClick={() => deleteEntity()}>
-                Delete this {entityName} Entry
-            </button>
+            <div>
+                <button onClick={() => deleteEntity()}>
+                    Delete this {entityName} Entry
+                </button>
+            </div>
 
             <Link to={`./update`}>
                 <button>Update this {entityName} Entry</button>
