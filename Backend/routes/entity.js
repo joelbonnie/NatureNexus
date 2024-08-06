@@ -28,18 +28,6 @@ const UNIQUE_ID_NAMES = {
 router.get('/:entityName/attributeNames', async function (req, res, next) {
     const { entityName } = req.params;
 
-    // TODO: the commented-out code could be used if we decide we want to
-    // sometimes prevent the user from entering their own primary key.
-
-    // const { includePrimaryKey } = req.query.includePrimaryKey;
-    // var query = '';
-    // if (includePrimaryKey === 'true') {
-    //     query = `select column_name from user_tab_columns where table_name = '${entityName}'`;
-    // } else {
-    //     const id_name = UNIQUE_ID_NAMES[entityName] || `${entityName}ID`;
-    //     query = `select column_name from user_tab_columns where table_name = '${entityName}' and column_name <> '${id_name}'`;
-    // }
-
     const query = `select column_name from user_tab_columns where table_name = '${entityName}'`;
     console.log(query);
 
@@ -68,16 +56,8 @@ router.post('/:entityName/insert', async function (req, res, next) {
             }
         })
         .join(',');
-    const id_name =
-        UNIQUE_ID_NAMES[entityName] || `${entityName}id`.toUpperCase();
-
-    // TODO: these two lines were for if the pkey is automatically incremented. not
-    // sure if we want to implement that.
-    // const pkeyQuery = `(select max(${id_name}) from ${entityName})+1`;
-    // const query = `insert into ${entityName} (${id_name},${columns}) values (${pkeyQuery},${vals})`;
 
     const query = `insert into ${entityName} (${columns}) values (${vals})`;
-
     console.log(query);
 
     db.fetchQueryResults(query)

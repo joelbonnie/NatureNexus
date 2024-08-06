@@ -1,26 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function simulateNetwork() {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const myObject = {
-                key1: 'value1',
-                key2: 'value2',
-            };
-            resolve(myObject);
-        }, 1000);
-    });
-}
-
-function printChanges(data) {
-    console.log(data);
-}
-
-export function NatureForm({
-    getData = simulateNetwork,
-    submitChanges = printChanges,
-    isCheckbox = false,
-}) {
+export function NatureForm({ getData, submitChanges, isCheckbox = false }) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
