@@ -10,6 +10,10 @@ Rangers Rejoice! Our project is an Ecosystem Management program used by national
 
 ![ER Diagram](Images/finalERDiagram.png)
 
+### UI Prototyping:
+
+![UI Image](Images/UIPrototyping.png)
+
 ### Task Breakdown:
 - **Backend**
     - Set up Oracle database
@@ -32,7 +36,7 @@ Rangers Rejoice! Our project is an Ecosystem Management program used by national
         - Allow updating entity values
 
 
-
+<!---
 ### Task Assignment & Timeline:
 
 1. Set up database - *Joel*
@@ -72,8 +76,4 @@ Rangers Rejoice! Our project is an Ecosystem Management program used by national
 11. Implement LivesIn filtering - *Cindy*
     - Create filtering button to backend
         - **Deadline: August 5th**
-
-
-### UI Prototyping:
-
-![UI Image](Images/UIPrototyping.png)
+-->
